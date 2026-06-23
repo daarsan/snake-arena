@@ -21,9 +21,45 @@ make frontend     # Vite dev server (port shown in terminal)
 ## Tests
 
 ```bash
-make test            # backend (pytest)
+make test-backend    # backend unit tests (pytest)
 make test-frontend   # frontend (vitest)
 ```
+
+## Docker
+
+Build the image (Node builds the frontend; Python serves it alongside the API):
+
+```bash
+docker build -t snake-arena .
+```
+
+Run with SQLite (default, data is lost when the container stops):
+
+```bash
+docker run \
+  -p 8000:8000 \
+  snake-arena
+```
+
+Run with Postgres:
+
+```bash
+docker run \
+  -p 8000:8000 \
+  -e DATABASE_URL=postgresql://user:pass@host:5432/db \
+  snake-arena
+```
+
+Or load environment variables from a file:
+
+```bash
+docker run \
+  -p 8000:8000 \
+  --env-file .env \
+  snake-arena
+```
+
+The app is available at **http://localhost:8000** (frontend + API in one).
 
 ## Project structure
 
