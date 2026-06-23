@@ -8,10 +8,12 @@ import {
   Scripts,
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
+import { Moon, Sun } from "lucide-react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { AuthProvider, useAuth } from "@/lib/auth-context";
+import { ThemeProvider, useTheme } from "@/lib/theme-context";
 import { Toaster } from "@/components/ui/sonner";
 import { Button } from "@/components/ui/button";
 
@@ -70,6 +72,15 @@ function RootShell({ children }: { children: ReactNode }) {
   );
 }
 
+function ThemeToggle() {
+  const { theme, toggle } = useTheme();
+  return (
+    <Button size="sm" variant="ghost" onClick={toggle} aria-label="Toggle theme">
+      {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+    </Button>
+  );
+}
+
 function Nav() {
   const { user, logout } = useAuth();
   return (
@@ -91,6 +102,7 @@ function Nav() {
               <Link to="/signup" className="rounded-md bg-primary px-3 py-1.5 text-primary-foreground hover:opacity-90">Sign up</Link>
             </div>
           )}
+          <ThemeToggle />
         </nav>
       </div>
     </header>
@@ -101,15 +113,17 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <div className="min-h-screen bg-background text-foreground">
-          <Nav />
-          <main className="mx-auto max-w-5xl px-4 py-8">
-            <Outlet />
-          </main>
-        </div>
-        <Toaster />
-      </AuthProvider>
+      <ThemeProvider>
+        <AuthProvider>
+          <div className="min-h-screen bg-background text-foreground">
+            <Nav />
+            <main className="mx-auto max-w-5xl px-4 py-8">
+              <Outlet />
+            </main>
+          </div>
+          <Toaster />
+        </AuthProvider>
+      </ThemeProvider>
     </QueryClientProvider>
   );
 }
