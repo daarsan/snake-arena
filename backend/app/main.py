@@ -5,12 +5,14 @@ from fastapi.exceptions import HTTPException, RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
+from .database import init_db
 from .routers import auth, games, scores
 from .seed import seed
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    init_db()
     seed()
     yield
 
