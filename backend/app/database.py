@@ -1,6 +1,6 @@
 import os
 
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, JSON, String, create_engine
+from sqlalchemy import BigInteger, Boolean, Column, ForeignKey, Integer, JSON, String, create_engine
 from sqlalchemy.orm import DeclarativeBase, Session, sessionmaker
 
 DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./snake_arena.db")
@@ -37,7 +37,7 @@ class DbScore(Base):
     username = Column(String, nullable=False)
     mode = Column(String, nullable=False)
     score = Column(Integer, nullable=False)
-    created_at = Column(Integer, nullable=False)  # ms epoch
+    created_at = Column(BigInteger, nullable=False)  # ms epoch
 
 
 class DbGame(Base):
@@ -52,7 +52,7 @@ class DbGame(Base):
     food = Column(JSON, nullable=False)    # {"x": int, "y": int}
     grid_size = Column(Integer, nullable=False)
     alive = Column(Boolean, nullable=False, default=True)
-    updated_at = Column(Integer, nullable=False)  # ms epoch
+    updated_at = Column(BigInteger, nullable=False)  # ms epoch
 
 
 def get_db():
