@@ -20,8 +20,11 @@ dev: ## Start frontend and backend together (Ctrl-C stops both)
 	  (cd frontend && npm run dev) & \
 	  wait
 
-test: ## Run backend tests
+test: ## Run backend unit tests
 	cd backend && uv run pytest tests/ -v
+
+test-integration: ## Run backend integration tests against a temporary SQLite database
+	cd backend && uv run pytest tests_integration/ -v
 
 test-frontend: ## Run frontend tests
 	cd frontend && npm test
