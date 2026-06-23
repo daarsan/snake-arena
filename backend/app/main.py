@@ -1,9 +1,11 @@
 from contextlib import asynccontextmanager
+from pathlib import Path
 
 from fastapi import FastAPI, Request
 from fastapi.exceptions import HTTPException, RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import FileResponse, JSONResponse
+from fastapi.staticfiles import StaticFiles
 
 from .database import init_db
 from .routers import auth, games, scores
@@ -36,3 +38,11 @@ async def http_exception_handler(request: Request, exc: HTTPException) -> JSONRe
 app.include_router(auth.router, prefix="/api")
 app.include_router(scores.router, prefix="/api")
 app.include_router(games.router, prefix="/api")
+
+_STATIC_DIR = Path(__file__).parent.parent / "static"
+if _STATIC_DIR.exists():
+    app.mount("/assets", StaticFiles(directory=_STATIC_DIR / "assets"), name="assets")
+
+    @app.get("/{full_path:path}")
+    async def serve_frontend(full_path: str):
+        return FileResponse(_STATIC_DIR / "index.html")
