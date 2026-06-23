@@ -1,7 +1,6 @@
-import { createMockApi } from "./mockApi";
+import { createRealApi } from "./realApi";
 import type { ApiService } from "./types";
 
-// Single centralized service instance. Swap to a real implementation here when ready.
-export const api: ApiService = createMockApi();
+export const api: ApiService = createRealApi();
 
 export type { ApiService, User, Score, ActiveGame, GameMode } from "./types";
