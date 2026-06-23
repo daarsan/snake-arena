@@ -1,4 +1,4 @@
-.PHONY: install backend frontend dev test test-frontend help
+.PHONY: install backend frontend dev test-backend test-integration test-frontend help
 
 help: ## Show this help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | \
@@ -20,7 +20,7 @@ dev: ## Start frontend and backend together (Ctrl-C stops both)
 	  (cd frontend && npm run dev) & \
 	  wait
 
-test: ## Run backend unit tests
+test-backend: ## Run backend unit tests
 	cd backend && uv run pytest tests/ -v
 
 test-integration: ## Run backend integration tests against a temporary SQLite database
